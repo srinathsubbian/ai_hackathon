@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: product-recommender
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_BASE_URL
+        sync: false
+      - key: LLM_MODEL
+        value: genailab-maas-sonnet-4.6
+      - key: TOOL_MODE
+        value: native

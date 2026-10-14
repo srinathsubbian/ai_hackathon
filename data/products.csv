@@ -1,0 +1,31 @@
+product_id,name,category,brand,price,rating,stock,tags,description
+P001,AeroRun Lightweight Running Shoes,Footwear,AeroRun,89.99,4.6,42,running;lightweight;breathable;sport,Breathable mesh running shoes with responsive cushioning for daily training and road races.
+P002,TrailMaster Waterproof Hiking Boots,Footwear,TrailMaster,129.00,4.7,18,hiking;waterproof;outdoor;durable,Rugged waterproof boots with ankle support and grippy soles for rough mountain trails.
+P003,UrbanStep Casual Sneakers,Footwear,UrbanStep,64.50,4.3,60,casual;everyday;comfortable;stylish,Clean minimalist sneakers that pair with jeans or chinos for everyday wear.
+P004,CloudWalk Memory Foam Slippers,Footwear,CloudWalk,29.99,4.5,0,cozy;home;comfortable;gift,Plush memory foam slippers with a non-slip sole for relaxing at home.
+P005,PeakShell Insulated Winter Jacket,Apparel,PeakShell,159.00,4.8,25,winter;warm;waterproof;outdoor,Insulated waterproof jacket rated for freezing temperatures with a detachable hood.
+P006,FlexFit Performance T-Shirt,Apparel,FlexFit,24.99,4.2,120,gym;sport;breathable;quick-dry,Moisture-wicking t-shirt that stays cool during workouts and runs.
+P007,SoftKnit Merino Wool Sweater,Apparel,SoftKnit,79.00,4.6,33,winter;cozy;warm;stylish,Soft merino sweater that is warm without bulk and works for office or weekends.
+P008,DenimCo Slim Fit Jeans,Apparel,DenimCo,54.99,4.1,75,casual;everyday;stylish;durable,Stretch denim jeans with a modern slim cut and reinforced stitching.
+P009,YogaFlow Non-Slip Yoga Mat,Fitness,YogaFlow,34.99,4.7,55,yoga;fitness;home;non-slip,Extra-grippy 6mm yoga mat with alignment lines and a carry strap.
+P010,IronCore Adjustable Dumbbell Set,Fitness,IronCore,249.00,4.8,12,strength;gym;home;fitness,Adjustable dumbbells from 5 to 52 lbs that replace a full rack in small spaces.
+P011,PulseBand Fitness Tracker,Electronics,PulseBand,59.99,4.2,80,fitness;tracking;sleep;budget,Tracks heart rate steps and sleep with a 10-day battery life.
+P012,SoundCore Noise Cancelling Headphones,Electronics,SoundCore,179.00,4.6,30,music;travel;noise-cancelling;wireless,Over-ear wireless headphones with strong noise cancelling and 35-hour battery.
+P013,BudsLite True Wireless Earbuds,Electronics,BudsLite,49.99,4.0,95,music;wireless;sport;budget,Compact earbuds with a secure fit for workouts and daily commutes.
+P014,PixelView 27in 4K Monitor,Electronics,PixelView,329.00,4.5,14,work;gaming;4k;display,Sharp 4K IPS monitor with accurate color for design work and gaming.
+P015,TypeMaster Mechanical Keyboard,Electronics,TypeMaster,89.00,4.6,40,work;gaming;typing;wireless,Wireless mechanical keyboard with tactile switches and a long battery life.
+P016,BrewPro Programmable Coffee Maker,Kitchen,BrewPro,69.99,4.4,28,coffee;kitchen;morning;programmable,12-cup coffee maker with a timer so fresh coffee is ready when you wake up.
+P017,ChefEdge 8in Chef Knife,Kitchen,ChefEdge,44.00,4.8,50,cooking;kitchen;durable;gift,Forged stainless steel chef knife with a comfortable handle and razor edge.
+P018,AirCrisp Digital Air Fryer,Kitchen,AirCrisp,99.00,4.5,22,cooking;healthy;kitchen;quick,5-quart air fryer that cooks crispy meals with little oil in minutes.
+P019,GreenLeaf Cast Iron Skillet,Kitchen,GreenLeaf,36.50,4.7,45,cooking;durable;kitchen;outdoor,Pre-seasoned 12-inch skillet for searing baking and campfire cooking.
+P020,LumaDesk LED Desk Lamp,Home,LumaDesk,32.99,4.4,65,work;study;lighting;home,Adjustable LED lamp with warm and cool modes and a USB charging port.
+P021,DreamCloud Memory Foam Pillow,Home,DreamCloud,39.99,4.5,70,sleep;comfortable;home;cozy,Contoured memory foam pillow that supports neck alignment for side and back sleepers.
+P022,PureAir HEPA Air Purifier,Home,PureAir,139.00,4.6,16,home;allergy;quiet;health,Quiet HEPA purifier that cleans rooms up to 400 sq ft.
+P023,CozyNest Weighted Blanket,Home,CozyNest,74.99,4.4,0,sleep;cozy;gift;home,15 lb weighted blanket with a breathable cover for calmer sleep.
+P024,TrekPack 40L Hiking Backpack,Outdoor,TrekPack,109.00,4.7,20,hiking;travel;outdoor;durable,Comfortable 40-liter pack with rain cover and ventilated back panel.
+P025,CampLite 2-Person Tent,Outdoor,CampLite,149.00,4.5,10,camping;outdoor;lightweight;waterproof,Easy-setup lightweight tent with a full rainfly for weekend trips.
+P026,HydroSip Insulated Water Bottle,Outdoor,HydroSip,27.99,4.8,150,hydration;gym;outdoor;durable,Stainless steel bottle that keeps drinks cold 24 hours or hot 12 hours.
+P027,SkinGlow Vitamin C Serum,Beauty,SkinGlow,22.00,4.3,85,skincare;beauty;brightening;gift,Lightweight serum that brightens skin tone and fades dark spots.
+P028,GentleCare Fragrance-Free Moisturizer,Beauty,GentleCare,18.50,4.6,90,skincare;sensitive;hydrating;budget,Fragrance-free daily moisturizer suitable for sensitive skin.
+P029,ZenReads Kindle-Style E-Reader,Electronics,ZenReads,119.00,4.5,35,reading;travel;gift;wireless,Glare-free 6.8in e-reader with weeks of battery life and adjustable warm light.
+P030,PackSmart Carry-On Suitcase,Travel,PackSmart,119.00,4.6,26,travel;durable;lightweight;carry-on,Hard-shell carry-on with spinner wheels and a built-in USB port.
