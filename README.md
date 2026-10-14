@@ -22,7 +22,8 @@ product-recommender/
 │   ├── llm.py       # the ONLY file that talks to your LLM provider
 │   ├── catalog.py   # CSV loading + keyword search
 │   ├── config.py    # environment settings
-│   └── cli.py       # terminal chat:  python -m app.cli
+│   ├── cli.py       # terminal chat:  python -m app.cli
+│   └── diagnose.py  # connection checker: python -m app.diagnose
 ├── static/index.html  # chat web UI
 ├── data/products.csv  # sample catalog (30 products)
 ├── tests/             # pytest suite (no API key needed)
@@ -164,10 +165,32 @@ The app listens on `$PORT`.
 
 ## Troubleshooting
 
+**Getting a 502 error? Run the diagnostic first** (uses the same `.env` as the app):
+
+```bash
+python -m app.diagnose
+```
+
+It tests the gateway, a plain chat call, and a tool-calling call, and prints the exact error with a hint.
+To see the real error in the app itself, set `DEBUG_ERRORS=true`, restart, and read the response
+(or the server log line starting with `LLM API error`). Turn `DEBUG_ERRORS` off in production.
+
+Common causes of 502:
+
+| Cause | Fix |
+|---|---|
+| Wrong `LLM_BASE_URL` (missing `/v1`, or full `/chat/completions` pasted) | Use the gateway root, usually ending in `/v1` |
+| Wrong `LLM_MODEL` name (HTTP 404/400) | Use the exact model id your gateway lists |
+| Gateway rejects `tools` (HTTP 400) | Set `TOOL_MODE=rag` |
+| SSL certificate error on an internal gateway | `LLM_VERIFY_SSL=false` (or install the company CA) |
+| Cannot connect or timeout | VPN/proxy/firewall; the gateway must be reachable from where the app runs |
+| Gateway wants a custom auth header | `LLM_EXTRA_HEADERS={"x-api-key": "..."}` |
+
+Other issues:
+
 | Symptom | Fix |
 |---|---|
 | "Server is not configured correctly." | `LLM_MODEL` / `LLM_API_KEY` / `LLM_BASE_URL` missing or wrong; check startup logs |
-| 502 "assistant is unavailable" | LLM endpoint unreachable, wrong base URL, or provider error; check logs |
 | 503 "assistant is busy" | Provider rate limit; retry or raise your quota |
 | 429 "Too many requests" | Raise `RATE_LIMIT_PER_MINUTE` |
 | Model never searches or returns odd output | Set `TOOL_MODE=rag` |
