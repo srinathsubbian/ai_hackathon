@@ -4,6 +4,7 @@ from pathlib import Path
 from . import config
 from .agent import RecommenderAgent
 from .catalog import Catalog
+from .diagnose import explain
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,8 +21,14 @@ def main():
             break
         if not text:
             continue
+        checkpoint = len(messages)
         messages.append({"role": "user", "content": text})
-        print("\nAssistant:", agent.run_turn(messages), "\n")
+        try:
+            print("\nAssistant:", agent.run_turn(messages), "\n")
+        except Exception as e:  # show a short, readable error instead of a traceback
+            del messages[checkpoint:]
+            print("\n[error]", explain(e))
+            print("         Run: python -m app.diagnose\n")
 
 
 if __name__ == "__main__":

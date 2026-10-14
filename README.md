@@ -40,7 +40,7 @@ Ollama, vLLM, LM Studio, and many in-house gateways). Set three variables in `.e
 | Variable | Example |
 |---|---|
 | `LLM_API_KEY` | your key (can be blank for local servers) |
-| `LLM_BASE_URL` | `https://api.openai.com/v1`, `http://localhost:11434/v1` (Ollama), `https://your-gateway/v1` |
+| `LLM_BASE_URL` | `https://api.openai.com/v1` (OpenAI only), `http://localhost:11434/v1` (Ollama), `https://your-gateway/v1` |
 | `LLM_MODEL` | `genailab-maas-sonnet-4.6` (the model name your API expects) |
 
 **Pick a mode with `TOOL_MODE`:**
@@ -182,7 +182,7 @@ Common causes of 502:
 | Wrong `LLM_BASE_URL` (missing `/v1`, or full `/chat/completions` pasted) | Use the gateway root, usually ending in `/v1` |
 | Wrong `LLM_MODEL` name (HTTP 404/400) | Use the exact model id your gateway lists |
 | Gateway rejects `tools` (HTTP 400) | Set `TOOL_MODE=rag` |
-| SSL certificate error on an internal gateway | `LLM_VERIFY_SSL=false` (or install the company CA) |
+| SSL `CERTIFICATE_VERIFY_FAILED` on a company gateway | Try in order: `LLM_USE_SYSTEM_CERTS=true`, then `LLM_CA_BUNDLE=path\\to\\ca.pem`, then (insecure, testing only) `LLM_VERIFY_SSL=false` |
 | Cannot connect or timeout | VPN/proxy/firewall; the gateway must be reachable from where the app runs |
 | Gateway wants a custom auth header | `LLM_EXTRA_HEADERS={"x-api-key": "..."}` |
 

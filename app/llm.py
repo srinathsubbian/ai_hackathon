@@ -11,6 +11,19 @@ from openai import OpenAI
 from . import config
 
 
+def build_verify():
+    """How HTTPS certificates are checked (see .env.example for the options)."""
+    if config.LLM_CA_BUNDLE:
+        return config.LLM_CA_BUNDLE
+    if config.LLM_USE_SYSTEM_CERTS:
+        import ssl
+
+        import truststore  # makes Python trust the OS certificate store (Windows/macOS corporate CAs)
+
+        return truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    return config.LLM_VERIFY_SSL
+
+
 class LLMConfigError(Exception):
     pass
 
@@ -40,7 +53,7 @@ class LLMClient:
                 base_url=normalize_base_url(config.LLM_BASE_URL),
                 timeout=config.LLM_TIMEOUT,
                 default_headers=config.LLM_EXTRA_HEADERS or None,
-                http_client=httpx.Client(verify=config.LLM_VERIFY_SSL, timeout=config.LLM_TIMEOUT),
+                http_client=httpx.Client(verify=build_verify(), timeout=config.LLM_TIMEOUT),
             )
         return self._client
 

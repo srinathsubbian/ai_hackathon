@@ -2,7 +2,7 @@
 import httpx
 
 from . import config
-from .llm import LLMClient, normalize_base_url
+from .llm import LLMClient, build_verify, normalize_base_url
 
 OK, BAD = "[ OK ]", "[FAIL]"
 
@@ -16,6 +16,11 @@ def explain(e: Exception) -> str:
     status = getattr(e, "status_code", None)
     body = getattr(e, "body", None) or getattr(e, "response", None) and getattr(e.response, "text", "")
     text = f"{name}: {e}"
+    root = e
+    while root.__cause__ is not None:  # openai wraps the real network error; dig it out
+        root = root.__cause__
+    if root is not e:
+        text += f"\n         underlying cause: {type(root).__name__}: {root}"
     if status:
         text += f"  (HTTP {status})"
     if body:
@@ -31,8 +36,12 @@ def explain(e: Exception) -> str:
         hint = "Rate limited or out of quota on the provider side."
     elif status and status >= 500:
         hint = "The gateway itself errored. Retry, or ask its admin."
+    elif "10061" in text or "refused" in text.lower():
+        hint = ("Nothing is listening at that host:port. Check LLM_BASE_URL: the port, http vs https, "
+                "and whether the server/gateway is running or needs VPN.")
     elif "ssl" in text.lower() or "certificate" in text.lower():
-        hint = "SSL problem (common with internal gateways). Try LLM_VERIFY_SSL=false."
+        hint = ("SSL problem (common with company gateways). Try LLM_USE_SYSTEM_CERTS=true first; "
+                "if that fails, LLM_VERIFY_SSL=false.")
     elif "connect" in text.lower() or "timeout" in text.lower() or "name or service" in text.lower():
         hint = "Cannot reach the gateway: check LLM_BASE_URL, VPN/proxy/firewall, and that this machine can open it."
     return text + (f"\n         hint: {hint}" if hint else "")
@@ -44,7 +53,9 @@ def main():
     print(f"Base URL : {base}")
     print(f"Model    : {config.LLM_MODEL}")
     print(f"API key  : {key[:4] + '...' + key[-2:] if len(key) > 8 else ('(set)' if key else '(empty)')}")
-    print(f"SSL check: {config.LLM_VERIFY_SSL}   Tool mode: {config.TOOL_MODE}\n")
+    ssl_mode = ("CA bundle" if config.LLM_CA_BUNDLE else "system certificates" if config.LLM_USE_SYSTEM_CERTS
+                else "on" if config.LLM_VERIFY_SSL else "OFF")
+    print(f"SSL check: {ssl_mode}   Tool mode: {config.TOOL_MODE}\n")
 
     problems = config.problems()
     for p in problems:
@@ -54,7 +65,7 @@ def main():
 
     headers = {"Authorization": f"Bearer {key}", **config.LLM_EXTRA_HEADERS}
     try:
-        r = httpx.get(f"{base}/models", headers=headers, verify=config.LLM_VERIFY_SSL, timeout=20)
+        r = httpx.get(f"{base}/models", headers=headers, verify=build_verify(), timeout=20)
         ok = r.status_code < 400
         print(OK if ok else BAD, f"GET {base}/models -> HTTP {r.status_code}")
         if ok:
