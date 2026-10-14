@@ -128,10 +128,13 @@ def chat(req: ChatRequest, request: Request):
         except openai.RateLimitError:
             del messages[checkpoint:]
             raise HTTPException(503, "The assistant is busy. Please try again shortly.")
-        except openai.APIError as e:  # includes connection errors and timeouts
+        except openai.APIError as e:  # includes connection errors, timeouts, 4xx/5xx from the gateway
             del messages[checkpoint:]
-            log.error("LLM API error: %s", e)
-            raise HTTPException(502, "The assistant is unavailable. Please try again.")
+            log.error("LLM API error: type=%s status=%s message=%s body=%s",
+                      type(e).__name__, getattr(e, "status_code", None), e, getattr(e, "body", None))
+            detail = (f"{type(e).__name__}: {e}" if config.DEBUG_ERRORS
+                      else "The assistant is unavailable. Please try again.")
+            raise HTTPException(502, detail)
         except Exception:
             del messages[checkpoint:]
             log.exception("Unexpected error while running the agent")

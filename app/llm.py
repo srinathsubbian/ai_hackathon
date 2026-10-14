@@ -5,6 +5,7 @@ OpenAI-compatible, change `complete()` and keep its return shape:
 an object with `.content` (str | None) and `.tool_calls` (list | None, each with
 `.id`, `.function.name`, `.function.arguments` as a JSON string).
 """
+import httpx
 from openai import OpenAI
 
 from . import config
@@ -12,6 +13,15 @@ from . import config
 
 class LLMConfigError(Exception):
     pass
+
+
+def normalize_base_url(url: str) -> str | None:
+    """Fix the common mistake of pasting the full /chat/completions URL as the base URL."""
+    url = (url or "").strip().rstrip("/")
+    for suffix in ("/chat/completions", "/completions"):
+        if url.endswith(suffix):
+            url = url[: -len(suffix)]
+    return url or None
 
 
 class LLMClient:
@@ -27,8 +37,10 @@ class LLMClient:
                 raise LLMConfigError("LLM_API_KEY / LLM_BASE_URL is not set")
             self._client = OpenAI(
                 api_key=config.LLM_API_KEY or "not-needed",  # local servers often ignore the key
-                base_url=config.LLM_BASE_URL or None,
+                base_url=normalize_base_url(config.LLM_BASE_URL),
                 timeout=config.LLM_TIMEOUT,
+                default_headers=config.LLM_EXTRA_HEADERS or None,
+                http_client=httpx.Client(verify=config.LLM_VERIFY_SSL, timeout=config.LLM_TIMEOUT),
             )
         return self._client
 

@@ -1,3 +1,4 @@
+import json
 import os
 
 from dotenv import load_dotenv
@@ -9,6 +10,19 @@ LLM_BASE_URL = os.getenv("LLM_BASE_URL", "")
 LLM_MODEL = os.getenv("LLM_MODEL", "")
 LLM_TIMEOUT = float(os.getenv("LLM_TIMEOUT", "60"))
 TOOL_MODE = os.getenv("TOOL_MODE", "native").lower()  # native | rag
+LLM_VERIFY_SSL = os.getenv("LLM_VERIFY_SSL", "true").lower() not in {"0", "false", "no"}
+DEBUG_ERRORS = os.getenv("DEBUG_ERRORS", "false").lower() in {"1", "true", "yes"}
+
+
+def _headers() -> dict:
+    raw = os.getenv("LLM_EXTRA_HEADERS", "").strip()
+    try:
+        return json.loads(raw) if raw else {}
+    except json.JSONDecodeError:
+        return {}
+
+
+LLM_EXTRA_HEADERS = _headers()  # e.g. {"x-api-key": "..."} if your gateway needs custom headers
 
 MAX_STEPS = int(os.getenv("MAX_STEPS", "8"))
 CATALOG_PATH = os.getenv("CATALOG_PATH", "data/products.csv")
